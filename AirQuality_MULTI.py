@@ -179,6 +179,10 @@ while True:
             print("Erro na leitura do sensor Oxigenio:", e)
         else:
             print(f"O2={oxygen_data}")
+
+    else:
+        oxygen_data = 0
+
     try:
         ens_AQI = ens.AQI
         ens_TVOC = ens.TVOC
@@ -215,10 +219,7 @@ while True:
             oled.text(f"eCO2: {ens_ECO2} ppm", 3, 50)
             oled.show()
 
-        if temOxiSens:
             log_data(ens_AQI['value'], ens_TVOC, ens_ECO2, oxygen_data)
-        else:
-            log_data(ens_AQI['value'], ens_TVOC, ens_ECO2)
 
         if not sta_if.isconnected():
             print("Wi-Fi desconectado. Tentando reconectar...")
@@ -233,12 +234,7 @@ while True:
 
             try:
                 url = 'https://api.thingspeak.com/update'
-
-                if temOxiSens:
-                    payload = f"api_key={THINGSPEAK_WRITE_API_KEY}&field1={ens_AQI['value']}&field2={ens_TVOC}&field3={ens_ECO2}&field4={oxygen_data}"
-                else:
-                    payload = f"api_key={THINGSPEAK_WRITE_API_KEY}&field1={ens_AQI['value']}&field2={ens_TVOC}&field3={ens_ECO2}"
-
+                payload = f"api_key={THINGSPEAK_WRITE_API_KEY}&field1={ens_AQI['value']}&field2={ens_TVOC}&field3={ens_ECO2}&field4={oxygen_data}"
                 print("Enviando para ThingSpeak")
                 #print (payload)
 
