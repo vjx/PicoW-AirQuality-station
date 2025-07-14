@@ -1,5 +1,4 @@
 #Air Quality Sensor InovLabs
-#Versão: 032 Oxigen OLED Multi
 
 from machine import Pin, I2C
 import ENS160
@@ -241,7 +240,7 @@ while True:
                     payload = f"api_key={THINGSPEAK_WRITE_API_KEY}&field1={ens_AQI['value']}&field2={ens_TVOC}&field3={ens_ECO2}"
 
                 print("Enviando para ThingSpeak")
-                print (payload)
+                #print (payload)
 
                 if temOled:
                     oled.fill_rect(0, 0, 127, 9, 0)
@@ -269,4 +268,5 @@ while True:
         blink_led(2)
         gc.collect()
         print(".......")
+
 
