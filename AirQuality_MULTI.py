@@ -7,8 +7,9 @@ import network, time
 import os
 from iot_credentials import THINGSPEAK_WRITE_API_KEY, wifi_networks
 import gc # Garbage Collect
+from ds3231 import * # RTC Clock
 
-#Verifica Sensor de Oxigénio:
+#Verifica Library do sensor de Oxigénio:
 try:
     from SEN0322 import DFRobot_Oxygen
 except Exception as e:
@@ -20,7 +21,7 @@ else:
     print("Sensor Oxigénio DETETADO:")
 
 
-#Verifica o OLED
+#Verifica library  do OLED
 try:
     from ssd1306 import SSD1306_I2C
 except Exception as e:
@@ -32,6 +33,22 @@ else:
 # Acende o LED para indicar que o sistema está ligado
 led = Pin("LED", Pin.OUT)
 led.on()
+
+#Configura RTC Clock
+try:
+    i2c_RTC = machine.I2C(id=0, sda=machine.Pin(4), scl=machine.Pin(5))
+except Exception as e:
+    print("ERRO NO RTC:", e)
+else:
+    time.sleep(0.5)
+    RTC = DS3231(i2c_RTC)
+    print("RTC OK")
+    # Print the current date in the format: month/day/year
+    print( "Date={}/{}/{}" .format(RTC.get_time()[1], RTC.get_time()[2],RTC.get_time()[0]) )
+    # Print the current time in the format: hours:minutes:seconds
+    print( "Time={}:{}:{}" .format(RTC.get_time()[3], RTC.get_time()[4],RTC.get_time()[5]) )
+   
+
 
 # Setup OLED
 if temOled:
