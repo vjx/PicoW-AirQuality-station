@@ -4,5 +4,4 @@ THINGSPEAK_WRITE_API_KEY = 'HJKMGQ3MKHGFCREAC' #Change to your API KEY
 wifi_networks = [
     ("NAME", "PASS"),
     ("OTHERNAME", "OTHERPASS"),
-
 ]
