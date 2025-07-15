@@ -42,6 +42,17 @@ except Exception as e:
 else:
     time.sleep(0.5)
     RTC = DS3231(i2c_RTC)
+    rtc_time = RTC.get_time()  # (ano, mes, dia, hora, minuto, segundo, dia_semana, yearday)
+    machine.RTC().datetime((
+        rtc_time[0],  # ano
+        rtc_time[1],  # mes
+        rtc_time[2],  # dia
+        rtc_time[6],  # dia da semana (1-7)
+        rtc_time[3],  # hora
+        rtc_time[4],  # minuto
+        rtc_time[5],  # segundo
+        0            # subsegundos
+))
     print("RTC OK")
     # Print the current date in the format: month/day/year
     print( "Date={}/{}/{}" .format(RTC.get_time()[1], RTC.get_time()[2],RTC.get_time()[0]) )
@@ -236,7 +247,7 @@ while True:
             oled.text(f"eCO2: {ens_ECO2} ppm", 3, 50)
             oled.show()
 
-            log_data(ens_AQI['value'], ens_TVOC, ens_ECO2, oxygen_data)
+        log_data(ens_AQI['value'], ens_TVOC, ens_ECO2, oxygen_data)
 
         if not sta_if.isconnected():
             print("Wi-Fi desconectado. Tentando reconectar...")
