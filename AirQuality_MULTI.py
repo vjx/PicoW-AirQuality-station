@@ -7,7 +7,15 @@ import network, time
 import os
 from iot_credentials import THINGSPEAK_WRITE_API_KEY, wifi_networks
 import gc # Garbage Collect
-from ds3231 import * # RTC Clock
+
+#Verifica Library do RTC:
+try:
+    from ds3231 import * # RTC Clock
+except Exception as e:
+    print("AVISO RTC NAO DETETADO:", e)
+    temRTC = False
+else:
+    temRTC = True
 
 #Verifica Library do sensor de Oxigénio:
 try:
@@ -34,30 +42,31 @@ else:
 led = Pin("LED", Pin.OUT)
 led.on()
 
+if temRTC:
 #Configura RTC Clock
-try:
-    i2c_RTC = machine.I2C(id=0, sda=machine.Pin(4), scl=machine.Pin(5))
-except Exception as e:
-    print("ERRO NO RTC:", e)
-else:
-    time.sleep(0.5)
-    RTC = DS3231(i2c_RTC)
-    rtc_time = RTC.get_time()  # (ano, mes, dia, hora, minuto, segundo, dia_semana, yearday)
-    machine.RTC().datetime((
-        rtc_time[0],  # ano
-        rtc_time[1],  # mes
-        rtc_time[2],  # dia
-        rtc_time[6],  # dia da semana (1-7)
-        rtc_time[3],  # hora
-        rtc_time[4],  # minuto
-        rtc_time[5],  # segundo
-        0            # subsegundos
-))
-    print("RTC OK")
-    # Print the current date in the format: month/day/year
-    print( "Date={}/{}/{}" .format(RTC.get_time()[1], RTC.get_time()[2],RTC.get_time()[0]) )
-    # Print the current time in the format: hours:minutes:seconds
-    print( "Time={}:{}:{}" .format(RTC.get_time()[3], RTC.get_time()[4],RTC.get_time()[5]) )
+    try:
+        i2c_RTC = machine.I2C(id=0, sda=machine.Pin(4), scl=machine.Pin(5))
+    except Exception as e:
+        print("ERRO NO RTC:", e)
+    else:
+        time.sleep(0.5)
+        RTC = DS3231(i2c_RTC)
+        rtc_time = RTC.get_time()  # (ano, mes, dia, hora, minuto, segundo, dia_semana, yearday)
+        machine.RTC().datetime((
+            rtc_time[0],  # ano
+            rtc_time[1],  # mes
+            rtc_time[2],  # dia
+            rtc_time[6],  # dia da semana (1-7)
+            rtc_time[3],  # hora
+            rtc_time[4],  # minuto
+            rtc_time[5],  # segundo
+            0            # subsegundos
+        ))
+        print("RTC OK")
+        # Print the current date in the format: month/day/year
+        print( "Date={}/{}/{}" .format(RTC.get_time()[1], RTC.get_time()[2],RTC.get_time()[0]) )
+        # Print the current time in the format: hours:minutes:seconds
+        print( "Time={}:{}:{}" .format(RTC.get_time()[3], RTC.get_time()[4],RTC.get_time()[5]) )
    
 
 
