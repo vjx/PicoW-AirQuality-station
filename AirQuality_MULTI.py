@@ -182,7 +182,7 @@ blink_led(2)
 
 # Configurar os sensores:
 try:
-    i2c_sens = machine.I2C(id=1, sda=machine.Pin(10), scl=machine.Pin(11)) # Os sensores estão nos mesmo pins
+    i2c_sens = machine.I2C(id=1, sda=machine.Pin(10), scl=machine.Pin(11), freq=100000) # Os sensores estão nos mesmo pins
 
 except Exception as e:
     print("Erro nos PINS dos Sensores:", e)
