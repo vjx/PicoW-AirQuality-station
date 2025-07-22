@@ -73,8 +73,8 @@ if temRTC:
 # Setup OLED
 if temOled:
     try:
-        i2c = machine.I2C(id=1, sda=machine.Pin(16), scl=machine.Pin(17), freq=100000)
-        oled = SSD1306_I2C(128, 64, i2c_sens)
+        i2c = machine.I2C(id=0, sda=machine.Pin(16), scl=machine.Pin(17))
+        oled = SSD1306_I2C(128, 64, i2c)
         oled.text("INOVLABS", 0, 0)
         oled.text("AIR QUALITY", 0, 17)
         oled.text("SENSOR", 0, 26)
